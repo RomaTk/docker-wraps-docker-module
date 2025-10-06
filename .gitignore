@@ -1,0 +1,7 @@
+/dockers/docker/install/configs
+/dockers/docker/install/saved-versions
+/dockers/docker/get-latest-version/configs
+/dockers/docker/download/with-configs/configs
+
+/dockers/docker/docker
+/env-scripts/docker/docker

@@ -1,0 +1,157 @@
+{
+    "wraps": {
+        "docker-get-latest-version": {
+            "basedOn": [
+                {
+                    "name": "ubuntu-wget-install",
+                    "tag": "latest",
+                    "precreate": true
+                },
+                {
+                    "name": "ubuntu-jq-install",
+                    "tag": "latest",
+                    "precreate": true
+                }
+            ],
+            "dockerfile": "./dockers/docker/get-latest-version/Dockerfile",
+            "build": {
+                "context": "./dockers/docker/get-latest-version"
+            },
+            "run": {
+                "volumes": [
+                    {
+                        "destination": "/working-env/docker/configs",
+                        "source": "./dockers/docker/get-latest-version/configs"
+                    }
+                ],
+                "entrypoint": {
+                    "tool": "bash",
+                    "args": [
+                        "-c"
+                    ],
+                    "commands": [
+                        "./main.sh"
+                    ]
+                }
+            },
+            "clean": [
+                "source ./env-scripts/not-by-wrap-name/install-some-util/clean.sh && main \"./dockers/docker\" \"get-latest-version\""
+            ]
+        },
+        "docker-download-without-configs": {
+            "basedOn": {
+                "name": "ubuntu-wget-install",
+                "tag": "latest",
+                "precreate": true
+            },
+            "dockerfile": "./dockers/docker/download/without-configs/Dockerfile",
+            "build": {
+                "context": "./dockers/docker/download/without-configs"
+            },
+            "run": {
+                "volumes": [
+                    {
+                        "destination": "/working-env/docker/download/saved",
+                        "source": "./dockers/docker/install/saved-versions"
+                    }
+                ],
+                "entrypoint": {
+                    "tool": "bash",
+                    "args": [
+                        "-c"
+                    ],
+                    "commands": [
+                        "(source /working-env/docker/download/main.sh && main)"
+                    ]
+                }
+            }
+        },
+        "docker-download-with-configs": {
+            "basedOn": {
+                "name": "docker-download-without-configs",
+                "tag": "latest",
+                "precreate": true
+            },
+            "dockerfile": "./dockers/docker/download/with-configs/Dockerfile",
+            "build": {
+                "context": "./dockers/docker/download/with-configs"
+            },
+            "clean": [
+                "source ./env-scripts/not-by-wrap-name/install-some-util/clean.sh && main \"./dockers/docker\" \"download\""
+            ]
+        },
+        "docker-install": {
+            "basedOn": {
+                "name": "ubuntu-iptables-install",
+                "tag": "latest",
+                "precreate": true
+            },
+            "dockerfile": "./dockers/docker/install/Dockerfile",
+            "build": {
+                "options": [
+                    "--build-arg VERSION=\"$(source ./env-scripts/not-by-wrap-name/install-some-util/read-version.sh && main \"./dockers/docker\")\"",
+                    "--build-arg OS=\"$(source ./env-scripts/not-by-wrap-name/install-some-util/read-os.sh && main \"./dockers/docker\")\"",
+                    "--build-arg ARCH=\"$(source ./env-scripts/not-by-wrap-name/install-some-util/read-arch.sh && main \"./dockers/docker\")\""
+                ],
+                "context": "./dockers/docker/install",
+                "run": {
+                    "before": [
+                        "source ./env-scripts/docker/install/prepare-before-build.sh && main \"\" \"linux\" \"./dockers/docker\""
+                    ],
+                    "after": [
+                        "source \"./env-scripts/not-by-wrap-name/backups/make.sh\" && main \"$(./envs.sh get name image docker-install)\""
+                    ]
+                }
+            },
+            "clean": [
+                "source \"./env-scripts/not-by-wrap-name/backups/clean.sh\" && main \"$(./envs.sh get name image docker-install)\"",
+                 "source ./env-scripts/not-by-wrap-name/install-some-util/clean.sh && main \"./dockers/docker\" \"install\""
+            ]
+        },
+        "docker-dood": {
+            "basedOn": {
+                "name": "docker-install",
+                "tag": "latest",
+                "precreate": true
+            },
+            "dockerfile": "./dockers/docker/dood/Dockerfile",
+            "build": {
+                "context": "./dockers/docker/dood"
+            },
+            "run": {
+                "options": [
+                    "-v /var/run/docker.sock:/var/run/docker.sock"
+                ]
+            }
+        },
+        "docker-dind": {
+            "basedOn": [{
+                   "name": "docker-install",
+                    "tag": "latest",
+                    "precreate": true
+                }, 
+                {
+                    "name": "use-sysbox",
+                    "tag": "latest",
+                    "precreate": true,
+                    "asAbstract": true
+                }
+            ],
+            "dockerfile": "./dockers/docker/dind/Dockerfile",
+            "build": {
+                "context": "./dockers/docker/dind"
+            },
+            "run": {
+                "entrypoint": {
+                    "tool": "bash",
+                    "args": [
+                        "-c"
+                    ],
+                    "commands": [
+                        "(source /working-env/docker/dind/reset-docker-processes-file.sh && main)"
+                    ]
+                }
+            }
+        }
+    }
+}
