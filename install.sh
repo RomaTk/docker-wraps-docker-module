@@ -16,6 +16,9 @@ function main() {
 
     ln -sf "../$current_dir/env-scripts/docker" "../../env-scripts/docker"
     [ $? -ne 0 ] && exit 1
+
+    ln -sf "../$current_dir/envs.json" "../../env-jsons/docker.json"
+    [ $? -ne 0 ] && exit 1
     
     mktemp_file=$(mktemp)
     [ $? -ne 0 ] && exit 1
