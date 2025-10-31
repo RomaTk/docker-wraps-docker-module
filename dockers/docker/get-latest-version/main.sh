@@ -1,5 +1,21 @@
 #!/bin/bash
 
+function main {
+    local latest_version
+    latest_version=$(getVersion)
+    if [ $? -ne 0 ]; then
+        echo "Error getting latest version"
+        exit 1
+    fi
+
+    echo "LATEST_VERSION=\"$latest_version\"" > /working-env/docker/configs/latest-version.cfg
+    if [ $? -ne 0 ]; then
+        echo "Error writing latest version to config file"
+        exit 1
+    fi
+
+    exit 0
+}
 
 function getVersion {
     local api_url
@@ -33,6 +49,3 @@ function getVersion {
     exit 0
 }
 
-latest_version=$(getVersion)
-
-echo "LATEST_VERSION=\"$latest_version\"" > /working-env/docker/configs/latest-version.cfg
