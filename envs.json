@@ -30,7 +30,7 @@
                         "-c"
                     ],
                     "commands": [
-                        "./main.sh"
+                        "(source /working-env/docker/main.sh && main)"
                     ]
                 }
             },
