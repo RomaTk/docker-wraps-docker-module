@@ -35,7 +35,7 @@
                 }
             },
             "clean": [
-                "source ./env-scripts/not-by-wrap-name/install-some-util/clean.sh && main \"./dockers/docker\" \"get-latest-version\""
+                "(source ./env-scripts/not-by-wrap-name/install-some-util/clean.sh && main \"./dockers/docker\" \"get-latest-version\")"
             ]
         },
         "docker-download-without-configs": {
@@ -77,7 +77,7 @@
                 "context": "./dockers/docker/download/with-configs"
             },
             "clean": [
-                "source ./env-scripts/not-by-wrap-name/install-some-util/clean.sh && main \"./dockers/docker\" \"download\""
+                "(source ./env-scripts/not-by-wrap-name/install-some-util/clean.sh && main \"./dockers/docker\" \"download\")"
             ]
         },
         "docker-install": {
@@ -96,16 +96,16 @@
                 "context": "./dockers/docker/install",
                 "run": {
                     "before": [
-                        "source ./env-scripts/docker/install/prepare-before-build.sh && main \"\" \"linux\" \"./dockers/docker\""
+                        "(source ./env-scripts/docker/install/prepare-before-build.sh && main \"\" \"linux\" \"./dockers/docker\")"
                     ],
                     "after": [
-                        "source \"./env-scripts/not-by-wrap-name/backups/make.sh\" && main \"$(./envs.sh get name image docker-install)\""
+                        "(source \"./env-scripts/not-by-wrap-name/backups/make.sh\" && main \"$(./envs.sh get name image docker-install)\")"
                     ]
                 }
             },
             "clean": [
-                "source \"./env-scripts/not-by-wrap-name/backups/clean.sh\" && main \"$(./envs.sh get name image docker-install)\"",
-                 "source ./env-scripts/not-by-wrap-name/install-some-util/clean.sh && main \"./dockers/docker\" \"install\""
+                "(source \"./env-scripts/not-by-wrap-name/backups/clean.sh\" && main \"$(./envs.sh get name image docker-install)\")",
+                "(source ./env-scripts/not-by-wrap-name/install-some-util/clean.sh && main \"./dockers/docker\" \"install\")"
             ]
         },
         "docker-dood": {
