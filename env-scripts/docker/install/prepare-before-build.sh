@@ -24,6 +24,20 @@ function main {
     exit 0
 }
 
+function isRunDownloadWrap {
+    local version="$1"
+    local os="$2"
+    local arch="$3"
+
+    if [ -f "./dockers/docker/install/saved-versions/${os}-${arch}-${version}.tgz" ]; then
+        echo "no"
+        exit 0
+    fi
+
+    echo "yes"
+    exit 0
+}
+
 function formatArch {
     local arch="$1"
 
