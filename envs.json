@@ -108,19 +108,34 @@
                 "(source ./env-scripts/not-by-wrap-name/install-some-util/clean.sh && main \"./dockers/docker\" \"install\")"
             ]
         },
-        "docker-dood": {
+        "docker-dood-base": {
             "basedOn": {
                 "name": "docker-install",
                 "tag": "latest",
                 "precreate": true
             },
-            "dockerfile": "./dockers/docker/dood/Dockerfile",
+            "dockerfile": "./dockers/docker/dood/base/Dockerfile",
             "build": {
-                "context": "./dockers/docker/dood"
+                "context": "./dockers/docker/dood/base"
             },
             "run": {
                 "options": [
                     "-v /var/run/docker.sock:/var/run/docker.sock"
+                ]
+            }
+        },
+        "docker-dood-volume-path-replacer": {
+            "basedOn": {
+                "name": "docker-dood-base",
+                "tag": "latest",
+                "precreate": true
+            },
+            "dockerfile": "./dockers/docker/dood/volume-path-replacer/Dockerfile",
+            "build": {
+                "context": "./dockers/docker/dood/volume-path-replacer",
+                "options": [
+                    "--build-arg REPLACE_WITH=\"$(pwd)\"",
+                    "--build-arg TO_REPLACE=\"/working-env/this/files\""
                 ]
             }
         },

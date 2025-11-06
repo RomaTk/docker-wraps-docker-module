@@ -3,4 +3,4 @@ FROM $BASED_ON
 
 VOLUME [ "/var/run/docker.sock" ]
 
-WORKDIR /working-env/docker
+WORKDIR /working-env/docker/dood/base
