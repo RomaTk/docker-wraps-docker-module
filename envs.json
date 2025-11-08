@@ -134,7 +134,7 @@
             "build": {
                 "context": "./dockers/docker/dood/volume-path-replacer",
                 "options": [
-                    "--build-arg REPLACE_WITH=\"$(pwd)\"",
+                    "--build-arg REPLACE_WITH=\"$(source ./env-scripts/docker/dood/volume-path-replacer/get-replace-with.sh && main)\"",
                     "--build-arg TO_REPLACE=\"/working-env/this/files\""
                 ]
             }
