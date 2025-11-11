@@ -2,16 +2,15 @@
 
 This Docker image is designed to wrap the standard Docker CLI and modify volume mount paths based on specified replacement rules. It is particularly useful within the Dood (Docker Out Of Docker) environment to ensure that volume paths are correctly mapped between the host and the container.
 
-## There are two build arguments:
-- `REPLACE_WITH`: The path that will replace the specified path in volume mounts.
-- `TO_REPLACE`: The path that will be replaced in volume mounts.
-
-## Usage
-To build the Docker image, use the following options, replacing the placeholders with your desired paths:
-
-```bash
---build-arg REPLACE_WITH="/new/path"
+## Volume
+The image mounts the following volume:
+- `/working-env/docker/dood/volume-path-replacer/config.cfg`: Configuration file that defines the path replacement rules.
+## Configuration
+The configuration file should be in the following format:
+```cfg
+TO_REPLACE="<path_to_replace>"
+REPLACE_WITH="<path_to_replace_with>"
 ```
-```bash
---build-arg TO_REPLACE="/old/path"
-```
+## There help scripts to create and manage the configuration file:
+- `create-config.sh`: Script to create the configuration file with specified paths.
+- `get-replace-with.sh`: Script to retrieve the `REPLACE_WITH` value from the configuration file.
