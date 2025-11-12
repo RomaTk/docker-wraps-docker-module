@@ -119,8 +119,11 @@
                 "context": "./dockers/docker/dood/base"
             },
             "run": {
-                "options": [
-                    "-v /var/run/docker.sock:/var/run/docker.sock"
+                "volumes": [
+                    {
+                        "destination": "/var/run/docker.sock",
+                        "source": "/var/run/docker.sock"
+                    }
                 ]
             }
         },

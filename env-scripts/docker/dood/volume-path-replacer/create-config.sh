@@ -58,11 +58,15 @@ function main {
             echo "Error creating config folder" >&2
             exit 1
         fi
-        
-        {
-            echo "TO_REPLACE=\"$to_replace\""
-            echo "REPLACE_WITH=\"$replace_with\""
-        } > "$path_to_config"
+    fi
+
+    {
+        echo "TO_REPLACE=\"$to_replace\""
+        echo "REPLACE_WITH=\"$replace_with\""
+    } > "$path_to_config"
+    if [[ $? -ne 0 ]]; then
+        echo "Error writing to config file" >&2
+        exit 1
     fi
 
     exit 0
