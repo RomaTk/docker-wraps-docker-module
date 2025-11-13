@@ -22,14 +22,23 @@ function getVersion {
     local data_by_api
     local latest_version_tag
     local latest_version
+    local page=1
 
-    api_url="https://api.github.com/repos/moby/moby/releases/latest"
+    while true; do
+        api_url="https://api.github.com/repos/moby/moby/releases?page=$page"
 
-    data_by_api=$(wget -qO- "$api_url")
-    [ $? -ne 0 ] && exit 1
+        data_by_api=$(wget -qO- "$api_url")
+        [ $? -ne 0 ] && exit 1
 
-    latest_version_tag=$(echo "$data_by_api" | jq -r .tag_name)
-    [ $? -ne 0 ] && exit 1
+        latest_version_tag=$( echo "$data_by_api" | jq -r '(.[] | .name) | select(test("^v[0-9]+") and (test("-rc") | not))' | head -n 1)
+        [ $? -ne 0 ] && exit 1
+
+        if [ -n "$latest_version_tag" ]; then
+            break
+        fi
+
+        page=$((page + 1))
+    done
 
     if [ -z "$latest_version_tag" ]; then
         echo "Failed to extract latest version tag"
@@ -48,4 +57,3 @@ function getVersion {
 
     exit 0
 }
-
