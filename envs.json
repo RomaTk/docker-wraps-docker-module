@@ -119,8 +119,11 @@
                 "context": "./dockers/docker/dood/base"
             },
             "run": {
-                "options": [
-                    "-v /var/run/docker.sock:/var/run/docker.sock"
+                "volumes": [
+                    {
+                        "destination": "/var/run/docker.sock",
+                        "source": "/var/run/docker.sock"
+                    }
                 ]
             }
         },
@@ -133,9 +136,18 @@
             "dockerfile": "./dockers/docker/dood/volume-path-replacer/Dockerfile",
             "build": {
                 "context": "./dockers/docker/dood/volume-path-replacer",
-                "options": [
-                    "--build-arg REPLACE_WITH=\"$(pwd)\"",
-                    "--build-arg TO_REPLACE=\"/working-env/this/files\""
+                "run": {
+                    "before": [
+                        "(source ./env-scripts/docker/dood/volume-path-replacer/create-config.sh && main \"./secrets/docker/dood/volume-path-replacer/config.cfg\" \"./\" \"./\")"
+                    ]
+                }
+            },
+            "run": {
+                "volumes": [
+                    {
+                        "destination": "/working-env/docker/dood/volume-path-replacer/config.cfg",
+                        "source": "./secrets/docker/dood/volume-path-replacer/config.cfg"
+                    }
                 ]
             }
         },
