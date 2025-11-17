@@ -27,7 +27,7 @@ function getVersion {
     while true; do
         api_url="https://api.github.com/repos/moby/moby/releases?page=$page"
 
-        data_by_api=$(wget -qO- "$api_url")
+        data_by_api=$(wget -c -qO- "$api_url")
         [ $? -ne 0 ] && exit 1
 
         latest_version_tag=$( echo "$data_by_api" | jq -r '(.[] | .name) | select(test("^v[0-9]+") and (test("-rc") | not))' | head -n 1)
