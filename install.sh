@@ -17,17 +17,19 @@ function main() {
     ln -sf "../$current_dir/env-scripts/docker" "../../env-scripts/docker"
     [ $? -ne 0 ] && exit 1
 
-    ln -sf "../$current_dir/envs.json" "../../env-jsons/docker.json"
+    ln -sf "../$current_dir/env-jsons/docker" "../../env-jsons/docker"
     [ $? -ne 0 ] && exit 1
 
     mktemp_file=$(mktemp)
     [ $? -ne 0 ] && exit 1
 
-    jq -s '.[0] * .[1]' "./envs.json" "../../envs.json" > "$mktemp_file"
-    [ $? -ne 0 ] && exit 1
+    for file in ../../env-jsons/docker/*.json; do
+        jq -s '.[0] * .[1]' "$file" "../../envs.json" > "$mktemp_file"
+        [ $? -ne 0 ] && exit 1
 
-    mv "$mktemp_file" "../../envs.json"
-    [ $? -ne 0 ] && exit 1
+        mv "$mktemp_file" "../../envs.json"
+        [ $? -ne 0 ] && exit 1
+    done
     
     rm -f "$mktemp_file"
     [ $? -ne 0 ] && exit 1

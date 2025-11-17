@@ -3,5 +3,8 @@
 /dockers/docker/get-latest-version/configs
 /dockers/docker/download/with-configs/configs
 
+/dockers/docker/buildx/get-latest-version/configs
+
 /dockers/docker/docker
 /env-scripts/docker/docker
+/env-jsons/docker/docker

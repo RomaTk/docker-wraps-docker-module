@@ -1,0 +1,42 @@
+{
+    "wraps": {
+        "docker-buildx-get-latest-version": {
+            "basedOn": [
+                {
+                    "name": "ubuntu-wget-install",
+                    "tag": "latest",
+                    "precreate": true
+                },
+                {
+                    "name": "ubuntu-jq-install",
+                    "tag": "latest",
+                    "precreate": true
+                }
+            ],
+            "dockerfile": "./dockers/docker/buildx/get-latest-version/Dockerfile",
+            "build": {
+                "context": "./dockers/docker/buildx/get-latest-version"
+            },
+            "run": {
+                "volumes": [
+                    {
+                        "destination": "/working-env/docker/buildx/configs",
+                        "source": "./dockers/docker/buildx/get-latest-version/configs"
+                    }
+                ],
+                "entrypoint": {
+                    "tool": "bash",
+                    "args": [
+                        "-c"
+                    ],
+                    "commands": [
+                        "(source /working-env/docker/buildx/main.sh && main)"
+                    ]
+                }
+            },
+            "clean": [
+                "(source ./env-scripts/not-by-wrap-name/install-some-util/clean.sh && main \"./dockers/docker/buildx\" \"get-latest-version\")"
+            ]
+        }
+    }
+}

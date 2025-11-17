@@ -1,0 +1,33 @@
+{
+    "wraps": {
+        "docker-dind": {
+            "basedOn": [{
+                   "name": "docker-install",
+                    "tag": "latest",
+                    "precreate": true
+                }, 
+                {
+                    "name": "use-sysbox",
+                    "tag": "latest",
+                    "precreate": true,
+                    "asAbstract": true
+                }
+            ],
+            "dockerfile": "./dockers/docker/dind/Dockerfile",
+            "build": {
+                "context": "./dockers/docker/dind"
+            },
+            "run": {
+                "entrypoint": {
+                    "tool": "bash",
+                    "args": [
+                        "-c"
+                    ],
+                    "commands": [
+                        "(source /working-env/docker/dind/reset-docker-processes-file.sh && main)"
+                    ]
+                }
+            }
+        }
+    }
+}
