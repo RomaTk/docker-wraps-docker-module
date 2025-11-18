@@ -45,7 +45,7 @@ function getVersion {
         exit 1
     fi
 
-    latest_version="${latest_version_tag#v}"
+    latest_version="${latest_version_tag}"
     [ $? -ne 0 ] && exit 1
 
     if [ -z "$latest_version" ]; then
