@@ -1,0 +1,112 @@
+{
+    "wraps": {
+        "docker-buildx-get-latest-version": {
+            "basedOn": [
+                {
+                    "name": "ubuntu-wget-install",
+                    "tag": "latest",
+                    "precreate": true
+                },
+                {
+                    "name": "ubuntu-jq-install",
+                    "tag": "latest",
+                    "precreate": true
+                }
+            ],
+            "dockerfile": "./dockers/docker/buildx/get-latest-version/Dockerfile",
+            "build": {
+                "context": "./dockers/docker/buildx/get-latest-version"
+            },
+            "run": {
+                "volumes": [
+                    {
+                        "destination": "/working-env/docker/buildx/configs",
+                        "source": "./dockers/docker/buildx/get-latest-version/configs"
+                    }
+                ],
+                "entrypoint": {
+                    "tool": "bash",
+                    "args": [
+                        "-c"
+                    ],
+                    "commands": [
+                        "(source /working-env/docker/buildx/main.sh && main)"
+                    ]
+                }
+            },
+            "clean": [
+                "(source ./env-scripts/not-by-wrap-name/install-some-util/clean.sh && main \"./dockers/docker/buildx\" \"get-latest-version\")"
+            ]
+        },
+        "docker-buildx-download-without-configs": {
+            "basedOn": {
+                "name": "ubuntu-wget-install",
+                "tag": "latest",
+                "precreate": true
+            },
+            "dockerfile": "./dockers/docker/buildx/download/without-configs/Dockerfile",
+            "build": {
+                "context": "./dockers/docker/buildx/download/without-configs"
+            },
+            "run": {
+                "volumes": [
+                    {
+                        "destination": "/working-env/docker/buildx/download/saved",
+                        "source": "./dockers/docker/buildx/install/saved-versions"
+                    }
+                ],
+                "entrypoint": {
+                    "tool": "bash",
+                    "args": [
+                        "-c"
+                    ],
+                    "commands": [
+                        "(source /working-env/docker/buildx/download/main.sh && main)"
+                    ]
+                }
+            }
+        },
+        "docker-buildx-download-with-configs": {
+            "basedOn": {
+                "name": "docker-buildx-download-without-configs",
+                "tag": "latest",
+                "precreate": true
+            },
+            "dockerfile": "./dockers/docker/buildx/download/with-configs/Dockerfile",
+            "build": {
+                "context": "./dockers/docker/buildx/download/with-configs"
+            },
+            "clean": [
+                "(source ./env-scripts/not-by-wrap-name/install-some-util/clean.sh && main \"./dockers/docker/buildx\" \"download\")"
+            ]
+        },
+        "docker-buildx-install": {
+            "basedOn": {
+                "name": "ubuntu-with-latest-packages",
+                "tag": "latest",
+                "precreate": true
+            },
+            "dockerfile": "./dockers/docker/buildx/install/Dockerfile",
+            "build": {
+                "options": [
+                    "--build-arg VERSION=\"$(source ./env-scripts/not-by-wrap-name/install-some-util/read-version.sh && main \"./dockers/docker/buildx\")\"",
+                    "--build-arg OS=\"$(source ./env-scripts/not-by-wrap-name/install-some-util/read-os.sh && main \"./dockers/docker/buildx\")\"",
+                    "--build-arg ARCH=\"$(source ./env-scripts/not-by-wrap-name/install-some-util/read-arch.sh && main \"./dockers/docker/buildx\")\""
+                ],
+                "context": "./dockers/docker/buildx/install",
+                "run": {
+                    "before": [
+                        "(source ./env-scripts/docker/buildx/install/prepare-before-build.sh && main \"\" \"linux\" \"./dockers/docker/buildx\")"
+                    ],
+                    "after": [
+                        "(source \"./env-scripts/not-by-wrap-name/backups/make.sh\" && main \"$(./envs.sh get name image docker-buildx-install)\")"
+                    ]
+                }
+            },
+            "clean": [
+                "(source \"./env-scripts/not-by-wrap-name/backups/clean.sh\" && main \"$(./envs.sh get name image docker-buildx-install)\")",
+                "(source ./env-scripts/not-by-wrap-name/install-some-util/clean.sh && main \"./dockers/docker/buildx\" \"install\")"
+            ]
+        }
+    }
+}
