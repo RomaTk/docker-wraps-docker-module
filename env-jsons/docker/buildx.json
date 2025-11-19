@@ -107,6 +107,24 @@
                 "(source \"./env-scripts/not-by-wrap-name/backups/clean.sh\" && main \"$(./envs.sh get name image docker-buildx-install)\")",
                 "(source ./env-scripts/not-by-wrap-name/install-some-util/clean.sh && main \"./dockers/docker/buildx\" \"install\")"
             ]
+        },
+        "docker-buildx-with-docker-installed": {
+            "basedOn": [
+                {
+                    "name": "docker-install",
+                    "tag": "latest",
+                    "precreate": true
+                },
+                {
+                    "name": "docker-buildx-install",
+                    "tag": "latest",
+                    "precreate": true
+                }
+            ],
+            "dockerfile": "./dockers/empty/Dockerfile",
+            "build": {
+                "context": "./dockers/empty"
+            }
         }
     }
 }

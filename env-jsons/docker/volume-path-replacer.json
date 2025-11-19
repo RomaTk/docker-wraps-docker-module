@@ -1,0 +1,28 @@
+{
+    "wraps": {
+        "docker-volume-path-replacer": {
+            "basedOn": {
+                "name": "docker-install",
+                "tag": "latest",
+                "precreate": true
+            },
+            "dockerfile": "./dockers/docker/volume-path-replacer/Dockerfile",
+            "build": {
+                "context": "./dockers/docker/volume-path-replacer",
+                "run": {
+                    "before": [
+                        "(source ./env-scripts/docker/volume-path-replacer/create-config.sh && main \"./secrets/docker/volume-path-replacer/config.cfg\" \"./\" \"./\")"
+                    ]
+                }
+            },
+            "run": {
+                "volumes": [
+                    {
+                        "destination": "/working-env/docker/volume-path-replacer/config.cfg",
+                        "source": "./secrets/docker/volume-path-replacer/config.cfg"
+                    }
+                ]
+            }
+        }
+    }
+}

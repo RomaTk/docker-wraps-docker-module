@@ -16,7 +16,7 @@ function fix_mount_args {
 
     local is_to_use_next_arg="false"
     
-    source /working-env/docker/dood/volume-path-replacer/config.cfg
+    source /working-env/docker/volume-path-replacer/config.cfg
     if [ $? -ne 0 ]; then
         echo "Error loading configuration file" >&2
         exit 1

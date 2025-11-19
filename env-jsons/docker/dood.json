@@ -1,11 +1,6 @@
 {
     "wraps": {
         "docker-dood-base": {
-            "basedOn": {
-                "name": "docker-install",
-                "tag": "latest",
-                "precreate": true
-            },
             "dockerfile": "./dockers/docker/dood/base/Dockerfile",
             "build": {
                 "context": "./dockers/docker/dood/base"
@@ -19,29 +14,20 @@
                 ]
             }
         },
-        "docker-dood-volume-path-replacer": {
-            "basedOn": {
-                "name": "docker-dood-base",
-                "tag": "latest",
-                "precreate": true
-            },
-            "dockerfile": "./dockers/docker/dood/volume-path-replacer/Dockerfile",
-            "build": {
-                "context": "./dockers/docker/dood/volume-path-replacer",
-                "run": {
-                    "before": [
-                        "(source ./env-scripts/docker/dood/volume-path-replacer/create-config.sh && main \"./secrets/docker/dood/volume-path-replacer/config.cfg\" \"./\" \"./\")"
-                    ]
+        "docker-dood-with-docker-installed": {
+            "basedOn": [
+                {
+                    "name": "docker-install",
+                    "tag": "latest",
+                    "precreate": true
+                },
+                {
+                    "name": "docker-dood-base",
+                    "tag": "latest",
+                    "precreate": true,
+                    "asAbstract": true
                 }
-            },
-            "run": {
-                "volumes": [
-                    {
-                        "destination": "/working-env/docker/dood/volume-path-replacer/config.cfg",
-                        "source": "./secrets/docker/dood/volume-path-replacer/config.cfg"
-                    }
-                ]
-            }
+            ]
         }
     }
 }
