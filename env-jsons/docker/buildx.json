@@ -121,10 +121,21 @@
                     "precreate": true
                 }
             ],
-            "dockerfile": "./dockers/empty/Dockerfile",
             "build": {
-                "context": "./dockers/empty"
-            }
+                "run": {
+                    "after": [
+                        {
+                            "action": "remove",
+                            "value": "(source \"./env-scripts/not-by-wrap-name/backups/make.sh\" && main \"$(./envs.sh get name image docker-buildx-install)\")",
+                            "basedOnScope": "docker-buildx-install"
+                        },
+                        "(source \"./env-scripts/not-by-wrap-name/backups/make.sh\" && main \"$(./envs.sh get name image docker-buildx-with-docker-installed)\")"
+                    ]
+                }
+            },
+            "clean": [
+                "(source \"./env-scripts/not-by-wrap-name/backups/clean.sh\" && main \"$(./envs.sh get name image docker-buildx-with-docker-installed)\")"
+            ]
         }
     }
 }
