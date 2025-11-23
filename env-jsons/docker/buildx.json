@@ -107,6 +107,35 @@
                 "(source \"./env-scripts/not-by-wrap-name/backups/clean.sh\" && main \"$(./envs.sh get name image docker-buildx-install)\")",
                 "(source ./env-scripts/not-by-wrap-name/install-some-util/clean.sh && main \"./dockers/docker/buildx\" \"install\")"
             ]
+        },
+        "docker-buildx-with-docker-installed": {
+            "basedOn": [
+                {
+                    "name": "docker-install",
+                    "tag": "latest",
+                    "precreate": true
+                },
+                {
+                    "name": "docker-buildx-install",
+                    "tag": "latest",
+                    "precreate": true
+                }
+            ],
+            "build": {
+                "run": {
+                    "after": [
+                        {
+                            "action": "remove",
+                            "value": "(source \"./env-scripts/not-by-wrap-name/backups/make.sh\" && main \"$(./envs.sh get name image docker-buildx-install)\")",
+                            "basedOnScope": "docker-buildx-install"
+                        },
+                        "(source \"./env-scripts/not-by-wrap-name/backups/make.sh\" && main \"$(./envs.sh get name image docker-buildx-with-docker-installed)\")"
+                    ]
+                }
+            },
+            "clean": [
+                "(source \"./env-scripts/not-by-wrap-name/backups/clean.sh\" && main \"$(./envs.sh get name image docker-buildx-with-docker-installed)\")"
+            ]
         }
     }
 }

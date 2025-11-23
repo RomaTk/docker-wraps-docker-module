@@ -4,7 +4,7 @@ This Docker image is designed to wrap the standard Docker CLI and modify volume 
 
 ## Volume
 The image mounts the following volume:
-- `/working-env/docker/dood/volume-path-replacer/config.cfg`: Configuration file that defines the path replacement rules.
+- `/working-env/docker/volume-path-replacer/config.cfg`: Configuration file that defines the path replacement rules.
 ## Configuration
 The configuration file should be in the following format:
 ```cfg

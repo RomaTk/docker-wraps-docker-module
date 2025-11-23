@@ -1,7 +1,8 @@
 {
     "wraps": {
         "docker-dind": {
-            "basedOn": [{
+            "basedOn": [
+                {
                    "name": "docker-install",
                     "tag": "latest",
                     "precreate": true
