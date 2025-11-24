@@ -118,7 +118,8 @@
                 {
                     "name": "docker-buildx-install",
                     "tag": "latest",
-                    "precreate": true
+                    "precreate": true,
+                    "asAbstract": true
                 }
             ],
             "build": {
