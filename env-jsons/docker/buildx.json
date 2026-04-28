@@ -77,7 +77,8 @@
                 "context": "./dockers/docker/buildx/download/with-configs"
             },
             "clean": [
-                "(source ./env-scripts/not-by-wrap-name/install-some-util/clean.sh && main \"./dockers/docker/buildx\" \"download\")"
+                "(source ./env-scripts/not-by-wrap-name/install-some-util/clean.sh && main \"./dockers/docker/buildx\" \"download\")",
+                "(source ./env-scripts/not-by-wrap-name/install-some-util/clean.sh && main \"./dockers/docker/buildx\" \"install\")"
             ]
         },
         "docker-buildx-install": {
@@ -104,8 +105,7 @@
                 }
             },
             "clean": [
-                "(source \"./env-scripts/not-by-wrap-name/backups/clean.sh\" && main \"$(./envs.sh get name image docker-buildx-install)\")",
-                "(source ./env-scripts/not-by-wrap-name/install-some-util/clean.sh && main \"./dockers/docker/buildx\" \"install\")"
+                "(source \"./env-scripts/not-by-wrap-name/backups/clean.sh\" && main \"$(./envs.sh get name image docker-buildx-install)\")"
             ]
         },
         "docker-buildx-with-docker-installed": {
@@ -118,7 +118,8 @@
                 {
                     "name": "docker-buildx-install",
                     "tag": "latest",
-                    "precreate": true
+                    "precreate": true,
+                    "asAbstract": true
                 }
             ],
             "build": {

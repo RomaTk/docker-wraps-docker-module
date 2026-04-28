@@ -22,7 +22,10 @@
                         "source": "./secrets/docker/volume-path-replacer/config.cfg"
                     }
                 ]
-            }
+            },
+            "clean": [
+                "(rm -f ./secrets/docker/volume-path-replacer/config.cfg)"
+            ]
         }
     }
 }
