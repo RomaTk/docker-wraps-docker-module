@@ -11,3 +11,4 @@
 /dockers/docker/docker
 /env-scripts/docker/docker
 /env-jsons/docker/docker
+/secrets-template/docker/docker

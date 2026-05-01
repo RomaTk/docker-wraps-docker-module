@@ -26,7 +26,7 @@ After that you will have the following wraps available:
     - `docker-dood-base`
     - `docker-dood-with-docker-installed`
 - [File - volume-path-replacer.json](./env-jsons/docker/volume-path-replacer.json)
-    - `docker-volume-path-replacer`
+    - `docker-volume-path-replacer` -> [Volume Path Replacer](./dockers/docker/volume-path-replacer/README.md) (recommended touse with `docker-dood` wrap)
 
 # Download and install
 
