@@ -13,7 +13,7 @@
                     "precreate": true
                 },
                 {
-                    "name": "use-sysbox",
+                    "name": "sysbox-use",
                     "tag": "latest",
                     "precreate": true,
                     "asAbstract": true
