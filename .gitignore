@@ -12,3 +12,4 @@
 /env-scripts/docker/docker
 /env-jsons/docker/docker
 /secrets-template/docker/docker
+/tests/docker/docker

@@ -23,6 +23,9 @@ function main() {
     ln -sf "../$current_dir/secrets-template/docker" "../../secrets-template/docker"
     [ $? -ne 0 ] && exit 1
 
+    ln -sf "../$current_dir/tests/docker" "../../tests/docker"
+    [ $? -ne 0 ] && exit 1
+
     mktemp_file=$(mktemp)
     [ $? -ne 0 ] && exit 1
 

@@ -3,10 +3,15 @@
         "docker-dind": {
             "basedOn": [
                 {
-                   "name": "docker-install",
+                    "name": "ubuntu-jq-install",
                     "tag": "latest",
                     "precreate": true
-                }, 
+                },
+                {
+                    "name": "docker-install",
+                    "tag": "latest",
+                    "precreate": true
+                },
                 {
                     "name": "use-sysbox",
                     "tag": "latest",

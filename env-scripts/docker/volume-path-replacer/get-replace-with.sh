@@ -11,7 +11,7 @@ function main {
         
         echo "$REPLACE_WITH"
     else
-        echo "$(pwd)"
+        echo "$(pwd)/"
     fi
 
     exit 0

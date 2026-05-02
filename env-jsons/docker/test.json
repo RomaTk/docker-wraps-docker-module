@@ -1,0 +1,101 @@
+{
+    "wraps": {
+        "docker-buildx-with-docker-installed-test": {
+            "basedOn": [
+                {
+                    "name": "docker-buildx-with-docker-installed",
+                    "tag": "latest",
+                    "precreate": true,
+                    "asAbstract": true
+                }
+            ],
+            "build": {
+                "run": {
+                    "after": [
+                        {
+                            "action": "remove",
+                            "value": "(source \"./env-scripts/not-by-wrap-name/backups/make.sh\" && main \"$(./envs.sh get name image docker-buildx-with-docker-installed)\")",
+                            "basedOnScope": "docker-buildx-with-docker-installed"
+                        }
+                    ]
+                }
+            },
+            "run": {
+                "entrypoint": {
+                    "tool": "bash",
+                    "args": [
+                        "-c"
+                    ],
+                    "commands": [
+                        "(docker buildx version)"
+                    ]
+                }
+            }
+        },
+        "docker-dind-test": {
+            "basedOn": [
+                {
+                    "name": "ubuntu-ca-certificates-install",
+                    "tag": "latest",
+                    "precreate": true
+                },
+                {
+                    "name": "docker-dind",
+                    "tag": "latest",
+                    "precreate": true,
+                    "asAbstract": true
+                }
+            ],
+            "run": {
+                "volumes": [
+                    {
+                        "destination": "/working-env/docker/dind-test",
+                        "source": "./tests/docker/dind"
+                    }
+                ],
+                "entrypoint": {
+                    "commands": [
+                        "(docker build -t dind-test /working-env/docker/dind-test)",
+                        "((docker run dind-test) && echo \"OK\")"
+                    ]
+                }
+            }
+        },
+        "docker-dood-with-docker-installed-test": {
+            "basedOn": [
+                {
+                    "name": "docker-dood-with-docker-installed",
+                    "tag": "latest",
+                    "precreate": true
+                },
+                {
+                    "name": "docker-volume-path-replacer",
+                    "tag": "latest",
+                    "precreate": true,
+                    "asAbstract": true
+                }
+            ],
+            "run": {
+                "volumes": [
+                    {
+                        "destination": "/working-env/docker/dood-test/context",
+                        "source": "./tests/docker/dood/context"
+                    }
+                ],
+                "entrypoint": {
+                    "tool": "bash",
+                    "args": [
+                        "-c"
+                    ],
+                    "commands": [
+                        "(docker build -t dood-test /working-env/docker/dood-test/context)",
+                        "(docker run --mount type=bind,src=\"./tests/docker/dood/volume\",dst=\"/working-env/docker/dood-test/volume\" --entrypoint \"bash\" dood-test -c /working-env/docker/dood-test/context/entry.sh)"
+                    ]
+                }
+            },
+            "clean": [
+                "(rm -f ./secrets/docker/volume-path-replacer/config.cfg)"
+            ]
+        }
+    }
+}

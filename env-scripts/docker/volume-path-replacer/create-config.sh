@@ -35,6 +35,12 @@ function main {
         fi
     else
         replace_with="$(realpath "$replace_with")"
+        
+        # If $replace_with dir, then add / at the end
+        if [[ -d "$replace_with" && "${replace_with: -1}" != "/" ]]; then
+            replace_with="$replace_with/"
+        fi
+
         if [[ $? -ne 0 ]]; then
             echo "Error resolving replace_with path" >&2
             exit 1

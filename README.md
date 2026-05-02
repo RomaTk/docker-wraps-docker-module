@@ -27,6 +27,10 @@ After that you will have the following wraps available:
     - `docker-dood-with-docker-installed`
 - [File - volume-path-replacer.json](./env-jsons/docker/volume-path-replacer.json)
     - `docker-volume-path-replacer` -> [Volume Path Replacer](./dockers/docker/volume-path-replacer/README.md) (recommended touse with `docker-dood` wrap)
+- [FILE - test.json](./env-jsons/docker/test.json) - used for testing porposes
+    - `docker-buildx-with-docker-installed-test`
+    - `docker-dind-test`
+    - `docker-dood-with-docker-installed-test`
 
 # Download and install
 
