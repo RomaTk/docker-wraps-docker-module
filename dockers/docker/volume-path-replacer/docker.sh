@@ -15,16 +15,29 @@ function fix_mount_args {
     local fixed_arg
 
     local is_to_use_next_arg="false"
-    
+    local to_replace_escaped
+    local replace_with_escaped
+
     source /working-env/docker/volume-path-replacer/config.cfg
     if [ $? -ne 0 ]; then
         echo "Error loading configuration file" >&2
         exit 1
     fi
 
+    to_replace_escaped=$(printf '%s\n' "$TO_REPLACE" | sed -E 's/[][\\^$.*?+()|#-]/\\&/g')
+    if [ $? -ne 0 ]; then
+        echo "Error removing special characters from TO_REPLACE" >&2
+        exit 1
+    fi
+    replace_with_escaped=$(printf '%s\n' "$REPLACE_WITH" | sed -E 's/[][\\^$.*?+()|#-]/\\&/g')
+    if [ $? -ne 0 ]; then
+        echo "Error removing special characters from REPLACE_WITH" >&2
+        exit 1
+    fi
+
     for arg in "$@"; do
         if [[ "$is_to_use_next_arg" == "true" || "$arg" == "--mount="* ]]; then
-            fixed_arg=$(echo "$arg" | sed -E "s#(src=)?$TO_REPLACE([^,]*)?#\1$REPLACE_WITH\2#")
+            fixed_arg=$(echo "$arg" | sed -E "s#(src=|source=)?$to_replace_escaped([^,]*)#\1$replace_with_escaped\2#")
             if [ $? -ne 0 ]; then
                 echo "Error processing argument: $arg" >&2
                 exit 1
